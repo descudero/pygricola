@@ -1,5 +1,6 @@
 from actions.Action import Action
 
+SIGNAL = 'my-first-signal'
 
 class OccupiedBoarActionException(Exception):
     pass
@@ -29,3 +30,8 @@ class GrainSeeds(BoardAction):
 
     def do(self, player):
         return super().do(player=player, number_times=1)
+
+
+class DayLaborer(BoardAction):
+    def __init__(self):
+        super().__init__(name="Day Laborer", cost={}, result={"food": 2}, requirement={})

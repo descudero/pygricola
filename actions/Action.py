@@ -1,3 +1,5 @@
+from pydispatch import dispatcher
+
 class Action:
     def __init__(self, name, cost, result, requirement):
         self.name = name
@@ -8,4 +10,5 @@ class Action:
     def do(self, player):
         print(self.result)
         player.use_resources(self.cost)
+        dispatcher.send(signal="do", sender=self, player=player)
         return self.result
