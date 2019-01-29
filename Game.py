@@ -1,6 +1,6 @@
 from Player import Player
 from Board import Board
-
+from pydispatch import dispatcher
 
 class Game:
     def __init__(self, number_players=1):

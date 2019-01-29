@@ -8,7 +8,6 @@ class Action:
         self.requirement = requirement
 
     def do(self, player):
-        print(self.result)
         player.use_resources(self.cost)
         dispatcher.send(signal="do", sender=self, player=player)
         return self.result

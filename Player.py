@@ -1,5 +1,5 @@
-from PlayerFarm import PlayerFarm
-
+from Farm import Farm
+from pydispatch import dispatcher
 
 class NotEnoughResourcesException(Exception):
     pass
@@ -23,7 +23,7 @@ class Player:
         self.pig = 0
 
         self.rooms = 0
-        self.farm = PlayerFarm(self)
+        self.farm = Farm(self)
 
         self.acquired_upgrades = {}
         self.acquired_jobs = {}
@@ -32,6 +32,11 @@ class Player:
         self.upgrade_cards = {}
         self.player_actions = {}
         self.used_family_member = 0
+        self.active_occupations = {}
+
+    @property
+    def occupations(self):
+        return len(self.active_occupations)
 
     def do(self, action):
         self.add_results(action.do(self))
@@ -43,7 +48,7 @@ class Player:
                 setattr(self, attr, getattr(self, attr) + value)
 
     def display_player(self):
-        string = "Player {no} grain {grain} ".format(no=self.uid, grain=self.grain)
+        string = "Player {no} resouces c{clay} ".format(no=self.uid, clay=self.clay)
 
         return string
 
@@ -56,3 +61,7 @@ class Player:
                                                       .format(resource=attr, actual=getattr(self, attr), cost=value))
                 else:
                     setattr(self, attr, getattr(self, attr) - value)
+
+    def add_occupation(self, occupation):
+        self.active_occupations[occupation.name] = occupation
+        del self.occupation_hand[occupation.name]
