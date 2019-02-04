@@ -16,7 +16,7 @@ class BoardAction(Action):
         self.board = board
         self.used = False
         super().__init__(name, cost, result, requirement)
-        dispatcher.connect(receiver=self.end, sender=self.board, signal="end")
+        dispatcher.connect(receiver=self.end, sender=self.board.game, signal="end")
 
     def end(self):
         self.used = False
@@ -53,7 +53,7 @@ class AccumulativeBoardAction(BoardAction):
     def __init__(self, name, cost, result, requirement, board, inc_resources={}):
         super().__init__(name=name, cost=cost, result=result, requirement=requirement, board=board)
         self.inc_resources = inc_resources
-        dispatcher.connect(signal="upkeep", receiver=self.accumulate, sender=self.board)
+        dispatcher.connect(signal="upkeep", receiver=self.accumulate, sender=self.board.game)
 
     def accumulate(self):
         self.result = dict(Counter(self.result) + Counter(self.inc_resources))
@@ -130,15 +130,15 @@ class Plow(BoardAction):
     def __init__(self, board):
         super().__init__(name="Plow", cost={}, result={"": 0}, requirement={}, board=board)
 
-    def do(self, player, x, y):
-        player.farm.plow(x, y)
+    def do(self, player, slot):
+        player.farm.build("Field")
 
 
 class Sow(BoardAction):
     def __init__(self, board):
         super().__init__(name="Sow", cost={}, result={"": 0}, requirement={}, board=board)
 
-    def do(self, player, field, crop):
-        player.farm.sow(field, crop)
+    def do(self, player, slot, crop):
+        player.farm.sow(slot, crop)
 
         player.use_resources(cost={crop: 1})

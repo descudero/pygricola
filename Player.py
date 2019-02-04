@@ -6,7 +6,8 @@ class NotEnoughResourcesException(Exception):
 
 
 class Player:
-    def __init__(self, uid):
+    def __init__(self, uid, game):
+        self.game = game
         self.uid = uid
         self.wood = 0
         self.food = 0
@@ -23,7 +24,7 @@ class Player:
         self.pig = 0
 
         self.rooms = 0
-        self.farm = Farm(self)
+        self.farm = Farm(self, board=self.game.board)
 
         self.acquired_upgrades = {}
         self.acquired_jobs = {}

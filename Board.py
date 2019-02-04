@@ -1,7 +1,8 @@
 from pydispatch import dispatcher
 
 class Board:
-    def __init__(self, number_players=2):
+    def __init__(self, game, number_players=1):
+        self.game = game
         self.board_actions = {}
         self.board_upgrades = []
         self.reveled_actions = []
@@ -9,8 +10,4 @@ class Board:
 
         pass
 
-    def upkeep(self):
-        dispatcher.send(signal="upkeep", sender=self)
 
-    def end(self):
-        dispatcher.send(signal="end", sender=self)
